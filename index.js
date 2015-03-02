@@ -5,10 +5,15 @@ var _ = require('lodash')
 
 
 var port = 3000
+var filename = '10mb.zip'
 
 app.get('/', function(req, res)
 {
-	res.sendFile('test10.zip', {root: __dirname})
+	res.sendFile(filename, {root: __dirname})
+	res.set({
+		'Content-Disposition': 'attachment; filename="'+ filename +'"',
+		'Content-Type': 'application/zip'
+	});
 })
 
 http.listen(port, function()
