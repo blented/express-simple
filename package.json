@@ -1,0 +1,8 @@
+{
+	"name": "simpleServer",
+	"version": "0.0.1",
+	"description": "Testing speeds",
+	"dependencies": {
+		"express": "^4.12.0",
+	}
+}
