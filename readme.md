@@ -2,6 +2,16 @@
 
 Simple nodejs server using Express.
 
-Just for testing various things.
+Routes:
+- / = displays basic server info.
+- /file = sends a 10mb file for download (raw, no gzip)
 
-Nothing to see here :)
+## Setup
+```
+	npm install
+```
+
+## Starting the server
+```
+	node index.js
+```
