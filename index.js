@@ -66,10 +66,23 @@ http.listen(port, function()
 		{
 			if (entry.family == 'IPv4')
 			{
-				prefix = entry.internal ? '(internal)' : '(external)'
+				if (entry.internal)
+				{
+					prefix = '(internal)'
+				}
+				else if (entry.address.slice(0, 3) == '10.' ||
+					entry.address.slice(0, 4) == '172.' ||
+					entry.address.slice(0, 4) == '192.')
+				{
+					prefix = '(private network)'
+				}
+				else
+					prefix = '(public)'
+
 				console.log(prefix + ' http://' +
 					entry.address + ':' +
 					port)
+
 				if (!entry.internal)
 					IPs += '<li>' + entry.address + '</li>\n'
 			}
