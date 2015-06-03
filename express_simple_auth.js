@@ -69,13 +69,19 @@ app.get('/loginCallback', function(req, res)
 })
 
 app.get('/auth/google',
-  passport.authenticate('google', {scope: ['profile', 'email'],
-								   successRedirect:'/success',
-								   failureRedirect:'/login'}),
+  passport.authenticate('google', {scope: ['profile', 'email']}),
   function(req, res){
     // The request will be redirected to Google for authentication, so this
     // function will not be called.
   })
+
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/',
+  									successRedirect: '/success' }),
+  function(req, res) {
+    res.redirect('/success')
+  });
+
 
 
 app.get('/login', 
@@ -84,12 +90,6 @@ app.get('/login',
     res.redirect('/')
   });
 
-app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/',
-  									successRedirect: '/success' }),
-  function(req, res) {
-    res.redirect('/')
-  });
 
 app.get('/success', isLoggedIn, function(req,res){
 	res.send('sucess!')
