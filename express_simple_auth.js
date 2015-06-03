@@ -57,7 +57,7 @@ app.get('/auth/google',
   })
 
 
-app.post('/login', 
+app.get('/login', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
@@ -78,9 +78,6 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 }); 
 
-app.get('/login', function(req, res){
-  res.send('login successful'+ { user: req.user });
-});
 
 
 
