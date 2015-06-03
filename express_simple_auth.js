@@ -8,8 +8,13 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var config = require('./config.js') 
 
+var port = config.port
+var filename = '10mb.zip'
+var IPs = ''
+
 var GOOGLE_CLIENT_ID = '829367360562-ln33ucp1j0eitrrerjlrkmcnocfem93h.apps.googleusercontent.com';
 var GOOGLE_CLIENT_SECRET = 'N9YedL1LMJjBnuD9RukOBp9y';
+
 
 passport.use(new GoogleStrategy
 ({
@@ -18,7 +23,7 @@ passport.use(new GoogleStrategy
    callbackURL: "http://www.ingenuitystudios.us/loginCallback"
  },
   function(accessToken, refreshToken, profile, done) {
-	return done(null, false);
+	return done(null, user);
   }
 ));
 
@@ -45,13 +50,13 @@ function isLoggedIn(req, res, next) {
 
 app.get('/loginCallback', function(req, res)
 {
-	res.send('wrong place buddy' + req.isAuthenticated)
+	res.send('wrong place buddy' + JSON.stringify(req))
 })
 
 app.get('/auth/google',
   passport.authenticate('google', {scope: ['profile', 'email'],
 								   successRedirect:'/success',
-								   failureRedirect:'/login'},
+								   failureRedirect:'/login'}),
   function(req, res){
     // The request will be redirected to Google for authentication, so this
     // function will not be called.
@@ -67,7 +72,7 @@ app.get('/login',
 
 app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login',
-  									successRedirect: '/profile' }),
+  									successRedirect: '/success' }),
   function(req, res) {
     res.redirect('/');
   });
@@ -81,11 +86,6 @@ app.get('/logout', function(req, res){
 }); 
 
 
-
-
-var port = config.port
-var filename = '10mb.zip'
-var IPs = ''
 
 
 var serverInfo = {
@@ -110,10 +110,6 @@ app.get('/file', function(req, res)
 	});
 })
 
-app.get('/profile', isLoggedIn, function(req, res) 
-{
-	res.send(req.user+ 'logged in')
-});
 
 app.get('/', function(req, res)
 {
