@@ -50,7 +50,8 @@ app.get('/loginCallback', function(req, res)
 
 app.get('/auth/google',
   passport.authenticate('google', {scope: ['profile', 'email'],
-								   successRedirect:'/profile'}),
+								   successRedirect:'/success'}),
+  								   failureRedirect:'/login',
   function(req, res){
     // The request will be redirected to Google for authentication, so this
     // function will not be called.
@@ -58,7 +59,8 @@ app.get('/auth/google',
 
 
 app.get('/login', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
+  passport.authenticate('google', { scope: ['profile', 'email'], 
+  									failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
   });
@@ -71,7 +73,7 @@ app.get('/auth/google/callback',
   });
 
 app.get('/success', isLoggedIn, function(req,res){
-
+	res.send('sucess!')
 })
 app.get('/logout', function(req, res){
   req.logout();
