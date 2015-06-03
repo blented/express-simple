@@ -79,14 +79,13 @@ app.get('/auth/google',
 
 
 app.get('/login', 
-  passport.authenticate('google', { scope: ['profile', 'email'], 
-  									failureRedirect: '/login' }),
+  passport.authenticate('google', {scope: ['profile', 'email']}),
   function(req, res) {
     res.redirect('/')
   });
 
 app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login',
+  passport.authenticate('google', { failureRedirect: '/',
   									successRedirect: '/success' }),
   function(req, res) {
     res.redirect('/')
@@ -129,7 +128,7 @@ app.get('/file', function(req, res)
 app.get('/', function(req, res)
 {
 	var html = '<html><body style="font-family:monospace">' +
-		'<h1>Server Info: ' + config.sitename + '</h1>' +
+		'<h1>Server Info: ' + name + '</h1>' +
 		'<ul>' +
 		'<li><strong>IPs:</strong><ul>' + IPs + '</ul></li>'
 
