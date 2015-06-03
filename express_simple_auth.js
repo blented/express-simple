@@ -40,7 +40,6 @@ passport.use(new GoogleStrategy({
 ))
 
 
-
 app.use(passport.initialize())
 
 passport.serializeUser(function(user, done) {
@@ -91,7 +90,7 @@ app.get('/login',
   });
 
 
-app.get('/success', isLoggedIn, function(req,res){
+app.get('/success', function(req,res){
 	res.send('sucess!')
 })
 app.get('/logout', function(req, res){
