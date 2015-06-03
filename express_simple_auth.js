@@ -15,18 +15,30 @@ var IPs = ''
 var GOOGLE_CLIENT_ID = '829367360562-ln33ucp1j0eitrrerjlrkmcnocfem93h.apps.googleusercontent.com'
 var GOOGLE_CLIENT_SECRET = 'N9YedL1LMJjBnuD9RukOBp9y'
 
+var testingUser = []
 
-passport.use(new GoogleStrategy
-({
-   clientID: GOOGLE_CLIENT_ID,
-   clientSecret: GOOGLE_CLIENT_SECRET,
-   callbackURL: "http://www.ingenuitystudios.us/loginCallback"
- },
-  function(accessToken, refreshToken, profile, done) {
-  	console.log(JSON.stringify(profile))
-	return done(null, profile)
-  }
-));
+
+
+passport.use(new GoogleStrategy({
+
+	clientID        : GOOGLE_CLIENT_ID,
+	clientSecret    : GOOGLE_CLIENT_SECRET,
+	callbackURL     : "http://www.ingenuitystudios.us/loginCallback"
+
+    },
+    function(token, refreshToken, profile, done) {
+
+        // make the code asynchronous
+        // User.findOne won't fire until we have all our data back from Google
+        process.nextTick(function() {
+        	console.log("this is the user")
+        	console.log(JSON.stringify(profile))
+        	return done(null, profile)
+        })
+    }
+}))
+
+
 
 app.use(passport.initialize())
 
