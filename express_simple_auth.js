@@ -47,8 +47,10 @@ app.get('/loginCallback', function(req, res)
 {
 	res.send('wrong place buddy')
 })
+
 app.get('/auth/google',
-  passport.authenticate('google', {scope: ['profile', 'email']}),
+  passport.authenticate('google', {scope: ['profile', 'email'],
+								   successRedirect:'/profile'}),
   function(req, res){
     // The request will be redirected to Google for authentication, so this
     // function will not be called.
