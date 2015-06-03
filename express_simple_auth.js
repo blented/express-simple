@@ -17,6 +17,7 @@ var GOOGLE_CLIENT_SECRET = 'N9YedL1LMJjBnuD9RukOBp9y'
 
 var testingUser = []
 
+var name = ''
 
 
 passport.use(new GoogleStrategy({
@@ -32,7 +33,7 @@ passport.use(new GoogleStrategy({
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
         	console.log("this is the user")
-        	console.log(JSON.stringify(profile))
+        	name = profile.name
         	return done(null, profile)
         })
     }
@@ -62,8 +63,9 @@ function isLoggedIn(req, res, next) {
 
 
 app.get('/loginCallback', function(req, res)
-{
-	res.send('wrong place buddy' )
+{	
+	console.log("we got here")
+	res.send('wrong place buddy' + name)
 })
 
 app.get('/auth/google',
