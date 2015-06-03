@@ -8,7 +8,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var config = require('./config.js') 
 
-app.use(passport.initialize())
+
 
 var GOOGLE_CLIENT_ID = '829367360562-ln33ucp1j0eitrrerjlrkmcnocfem93h.apps.googleusercontent.com';
 var GOOGLE_CLIENT_SECRET = 'N9YedL1LMJjBnuD9RukOBp9y';
@@ -17,7 +17,7 @@ passport.use(new GoogleStrategy
 ({
    clientID: GOOGLE_CLIENT_ID,
    clientSecret: GOOGLE_CLIENT_SECRET,
-   //callbackURL: "/nope"
+   callbackURL: "http://www.ingenuitystudios.us/loginCallback"
  },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -33,11 +33,12 @@ passport.use(new GoogleStrategy
   }
 ));
 
+app.use(passport.initialize())
+
 
 
 passport.serializeUser(function(user, done) {
   done(null, user);
-  console.log('user serialized')
 });
 
 passport.deserializeUser(function(obj, done) {
@@ -54,7 +55,7 @@ function isLoggedIn(req, res, next) {
     res.redirect('/');
 }
 
-app.get('/nope', function(req, res)
+app.get('/loginCallback', function(req, res)
 {
 	res.send('wrong place buddy')
 })
