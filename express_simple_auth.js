@@ -50,8 +50,8 @@ app.get('/loginCallback', function(req, res)
 
 app.get('/auth/google',
   passport.authenticate('google', {scope: ['profile', 'email'],
-								   successRedirect:'/success'}),
-  								   failureRedirect:'/login',
+								   successRedirect:'/success',
+								   failureRedirect:'/login'},
   function(req, res){
     // The request will be redirected to Google for authentication, so this
     // function will not be called.
