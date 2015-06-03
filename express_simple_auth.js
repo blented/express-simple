@@ -17,7 +17,7 @@ passport.use(new GoogleStrategy
 ({
    clientID: GOOGLE_CLIENT_ID,
    clientSecret: GOOGLE_CLIENT_SECRET,
-   callbackURL: "http://www.ingenuitystudios.us/loginCallback"
+   //callbackURL: "/nope"
  },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -54,7 +54,10 @@ function isLoggedIn(req, res, next) {
     res.redirect('/');
 }
 
-
+app.get('/nope', function(req, res)
+{
+	res.send('wrong place buddy')
+})
 app.get('/auth/google',
   passport.authenticate('google', {scope: 'https://www.googleapis.com/auth/plus.login'}),
   function(req, res){
