@@ -50,7 +50,7 @@ function isLoggedIn(req, res, next) {
 
 app.get('/loginCallback', function(req, res)
 {
-	res.send('wrong place buddy' + JSON.stringify(req))
+	res.send('wrong place buddy' )
 })
 
 app.get('/auth/google',
