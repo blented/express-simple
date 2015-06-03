@@ -8,8 +8,6 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var config = require('./config.js') 
 
-
-
 var GOOGLE_CLIENT_ID = '829367360562-ln33ucp1j0eitrrerjlrkmcnocfem93h.apps.googleusercontent.com';
 var GOOGLE_CLIENT_SECRET = 'N9YedL1LMJjBnuD9RukOBp9y';
 
@@ -20,22 +18,11 @@ passport.use(new GoogleStrategy
    callbackURL: "http://www.ingenuitystudios.us/loginCallback"
  },
   function(accessToken, refreshToken, profile, done) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-      
-      // To keep the example simple, the user's Google profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Google account with a user record in your database,
-      // and return that user instead.
-      //if user fine; call profile
-      return done(null, false);
-    });
+	return done(null, false);
   }
 ));
 
 app.use(passport.initialize())
-
-
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -55,28 +42,35 @@ function isLoggedIn(req, res, next) {
     res.redirect('/');
 }
 
+
 app.get('/loginCallback', function(req, res)
 {
 	res.send('wrong place buddy')
 })
 app.get('/auth/google',
-  passport.authenticate('google', {scope: 'https://www.googleapis.com/auth/plus.login'}),
+  passport.authenticate('google', {scope: ['profile', 'email']}),
   function(req, res){
     // The request will be redirected to Google for authentication, so this
     // function will not be called.
-  });
+  })
 
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/login');
-}
 
-app.get('/auth/google/callback', 
+app.post('/login', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
   });
 
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login',
+  									successRedirect: '/profile' }),
+  function(req, res) {
+    res.redirect('/');
+  });
+
+app.get('/success', isLoggedIn, function(req,res){
+
+})
 app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
