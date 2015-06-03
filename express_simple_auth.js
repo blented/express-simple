@@ -122,7 +122,7 @@ app.get('/profile', isLoggedIn, function(req, res)
 app.get('/', function(req, res)
 {
 	var html = '<html><body style="font-family:monospace">' +
-		'<h1>Server Info: ' + config.sitename + '</h1>' +
+		'<h1>Server Info: expressauth ' + config.sitename + '</h1>' +
 		'<ul>' +
 		'<li><strong>IPs:</strong><ul>' + IPs + '</ul></li>'
 
