@@ -8,9 +8,9 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 var cookieParser = require('cookie-parser')  
 var session = require('express-session')
 
-var GOOGLE_CLIENT_ID = '353594996268-eunc8cd2nfvp9qh0nc3dd5mn96ph3irr.apps.googleusercontent.com'
-var GOOGLE_CLIENT_SECRET = 'bTy5kWCVUImKMH_9rlXx5qAH'
-var GOOGLE_CALLBACK_ID = "http://localhost:3000/auth/google/oauth2callback"
+var GOOGLE_CLIENT_ID = '829367360562-ln33ucp1j0eitrrerjlrkmcnocfem93h.apps.googleusercontent.com'
+var GOOGLE_CLIENT_SECRET = 'N9YedL1LMJjBnuD9RukOBp9y'
+var GOOGLE_CALLBACK_ID = "http://www.ingenuitystudios.us/loginCallback"
 
 var config = require('./config.js') 
 
@@ -19,7 +19,7 @@ id = ''
 
 //
 
-var port = config.port
+var port = 80
 var filename = '10mb.zip'
 var IPs = ''
 
@@ -112,7 +112,7 @@ app.get('/auth/google',
 //   request.  If authentication fails, the user will be redirected back to the
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
-app.get('/auth/google/oauth2callback', 
+app.get('/loginCallback', 
 	passport.authenticate('google', { failureRedirect: '/fail' }),
 	function(req, res) 
 	{

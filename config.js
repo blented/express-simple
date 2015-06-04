@@ -1,4 +1,5 @@
-module.exports = {
-	 port : 3000,
+
+module_exporrts = {
+	 port : 80,
 	 sitename : 'sitename'
 }
