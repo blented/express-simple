@@ -72,7 +72,7 @@ app.get('/loginCallback', function(req, res)
   									successRedirect: '/success' }),
 	 function(req, res) {
     res.redirect('/success')
-})
+}})
 
 app.get('/auth/google',
   passport.authenticate('google', {scope: ['profile', 'email']}),
