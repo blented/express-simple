@@ -96,7 +96,7 @@ app.get('/login',
     res.redirect('/')
   });
 
-app.get('/fail', isLoggedIn, function(req,res){
+app.get('/fail', function(req,res){
 	res.send('fail!' )
 })
 
