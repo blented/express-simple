@@ -4,16 +4,16 @@
   "description": "Testing speeds",
   "dependencies": {
     "express": "^4.12.0",
-    "lodash": "*"
+    "lodash": "*",
+    "cookie-parser":"*",
+    "express-session":"*",
+    "passport":"*",
+    "passport-google-auth":"*"
   },
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/blented/express-simple.git"
   },
   "author": "",
   "license": "ISC",
