@@ -9,9 +9,9 @@ var cookieParser = require('cookie-parser')
 var session = require('express-session')
 
 // Should be moved to config
-var GOOGLE_CLIENT_ID = '829367360562-ln33ucp1j0eitrrerjlrkmcnocfem93h.apps.googleusercontent.com'
-var GOOGLE_CLIENT_SECRET = 'N9YedL1LMJjBnuD9RukOBp9y'
-var GOOGLE_CALLBACK_ID = "http://www.ingenuitystudios.us/loginCallback"
+var GOOGLE_CLIENT_ID = '353594996268-eunc8cd2nfvp9qh0nc3dd5mn96ph3irr.apps.googleusercontent.com'
+var GOOGLE_CLIENT_SECRET = 'bTy5kWCVUImKMH_9rlXx5qAH'
+var GOOGLE_CALLBACK_ID = "http://localhost/loginCallback"
 
 var config = require('./config.js') 
 
@@ -20,7 +20,7 @@ id = ''
 
 //
 
-var port = 80
+var port =  3000
 var filename = '10mb.zip'
 var IPs = ''
 
@@ -37,7 +37,7 @@ var serverInfo = {
 	'Network Interfaces': 'networkInterfaces'
 }
 
-//passport stuff
+// Passport Boilerplate
 passport.serializeUser(function(user, done) 
 {
 	done(null, user)
@@ -48,7 +48,7 @@ passport.deserializeUser(function(obj, done)
 	done(null, obj)
 })
 
-//Strategy setup 
+//Strategy setup: Get clientID, clientSecret and callbackURL from Google Developer Console
 passport.use(new GoogleStrategy
 	({
 	clientID        : GOOGLE_CLIENT_ID,
@@ -61,16 +61,16 @@ passport.use(new GoogleStrategy
 		//make the code asynchronous
 		// User.findOne won't fire until we have all our data back from Google
 		process.nextTick(function() {
-			//HERE IS WHERE I WOULD CHECK THE USER
+			//In a normal app here is where the app looks up user in database
 			if (profile.id == "112209607950970881138")
-			{// and return that user instead.
+			{
 				name = profile.displayName
 				id = profile.id
 				return done(null, profile)
 			}
 			else 
 				console.log("Bad user")
-				return (done, null, false)
+				return done (null, false)
 		})
 	})
 )
