@@ -10,6 +10,7 @@ var session = require('express-session')
 
 var GOOGLE_CLIENT_ID = '353594996268-eunc8cd2nfvp9qh0nc3dd5mn96ph3irr.apps.googleusercontent.com'
 var GOOGLE_CLIENT_SECRET = 'bTy5kWCVUImKMH_9rlXx5qAH'
+var GOOGLE_CALLBACK_ID = "http://localhost:3000/auth/google/oauth2callback"
 
 var config = require('./config.js') 
 
@@ -51,7 +52,7 @@ passport.use(new GoogleStrategy
 	({
 	clientID        : GOOGLE_CLIENT_ID,
 	clientSecret    : GOOGLE_CLIENT_SECRET,
-	callbackURL     : "http://localhost:3000/auth/google/oauth2callback"
+	callbackURL     : GOOGLE_CALLBACK_ID
 	},
 	function(token, refreshToken, profile, done) 
 	{
