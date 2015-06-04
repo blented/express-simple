@@ -51,9 +51,9 @@ passport.use(new GoogleStrategy({
       // To keep the example simple, the user's Google profile is returned to
       // represent the logged-in user.  In a typical application, you would want
       // to associate the Google account with a user record in your database,
-      if (profile.id == "112209607950970881138")// and return that user instead.
+      //if (profile.id == "112209607950970881138")// and return that user instead.
         return done(null, profile);
-      else return done(null, false);
+      //else return done(null, false);
     });
   }
 ));
@@ -63,23 +63,13 @@ passport.use(new GoogleStrategy({
 
 
 // configure Express
-/*app.configure(function() {
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
-  app.use(express.logger());
-  app.use(express.cookieParser());
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.session({ secret: 'keyboard cat' }));
-  // Initialize Passport!  Also use passport.session() middleware, to support
-  // persistent login sessions (recommended). */
+
   app.use(session({secret: 'hello there', resave:false, saveUnitialized: false}))
   app.use(cookieParser());
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use(express.static('public'))
+//  app.use(express.static('public'))
 /*  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
 });*/
 
 
