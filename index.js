@@ -8,6 +8,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 var cookieParser = require('cookie-parser')  
 var session = require('express-session')
 
+// Should be moved to config
 var GOOGLE_CLIENT_ID = '829367360562-ln33ucp1j0eitrrerjlrkmcnocfem93h.apps.googleusercontent.com'
 var GOOGLE_CLIENT_SECRET = 'N9YedL1LMJjBnuD9RukOBp9y'
 var GOOGLE_CALLBACK_ID = "http://www.ingenuitystudios.us/loginCallback"
