@@ -1,3 +1,4 @@
+
 var app = require('express')()
 var http = require('http').Server(app)
 var os = require('os')
@@ -18,6 +19,7 @@ var GOOGLE_CLIENT_SECRET = 'N9YedL1LMJjBnuD9RukOBp9y'
 var testingUser = []
 
 var name = ''
+var profile = undefined
 
 
 passport.use(new GoogleStrategy({
@@ -29,28 +31,19 @@ passport.use(new GoogleStrategy({
     },
     function(token, refreshToken, profile, done) {
     	name = profile.name
+    	console.log(name)
         // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
         	console.log("this is the user")
         	name = profile.name
+        	profile = profile
         	return done(null, profile)
         })
     }
 ))
 
-var sessionOpts = {
-  saveUninitialized: true, // saved new sessions
-  resave: false, // do not automatically write to the session store
-  store: sessionStore,
-  secret: config.session.secret,
-  cookie : { httpOnly: true, maxAge: 2419200000 } // configure when sessions expires
-}
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(cookieParser(config.session.secret))
-app.use(session(sessionOpts))
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -76,7 +69,8 @@ function isLoggedIn(req, res, next) {
 app.get('/loginCallback', function(req, res)
 {	
 	console.log("we got here")
-	res.send('wrong place buddy' + name)
+	console.log(name)
+
 })
 
 app.get('/auth/google',
@@ -102,7 +96,7 @@ app.get('/login',
   });
 
 
-app.get('/success', isloggedIn, function(req,res){
+app.get('/success', isLoggedIn, function(req,res){
 	res.send('sucess!' )
 })
 
