@@ -9,10 +9,9 @@ var cookieParser = require('cookie-parser')
 var session = require('express-session')
 var config = require('./config') 
 
-// Should be moved to config
 var GOOGLE_CLIENT_ID = config.google_client_id
 var GOOGLE_CLIENT_SECRET = config.google_client_secret
-var GOOGLE_CALLBACK_ID = config.google_callback_id
+var GOOGLE_CALLBACK_URL = config.google_callback_url
 var CALLBACK_PATH = config.google_callback_path
 
 
@@ -56,7 +55,7 @@ passport.use(new GoogleStrategy
 	({
 	clientID        : GOOGLE_CLIENT_ID,
 	clientSecret    : GOOGLE_CLIENT_SECRET,
-	callbackURL     : GOOGLE_CALLBACK_ID
+	callbackURL     : GOOGLE_CALLBACK_URL
 	},
 	function(token, refreshToken, profile, done) 
 	{
