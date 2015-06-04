@@ -56,15 +56,19 @@ passport.use(new GoogleStrategy
 	function(token, refreshToken, profile, done) 
 	{
 		name = profile.displayName
-		console.log(name)
 		//make the code asynchronous
 		// User.findOne won't fire until we have all our data back from Google
 		process.nextTick(function() {
 			//HERE IS WHERE I WOULD CHECK THE USER
-			//if (profile.id == "112209607950970881138")// and return that user instead.
-			name = profile.displayName
-			id = profile.id
-			return done(null, profile)
+			if (profile.id == "112209607950970881138")
+			{// and return that user instead.
+				name = profile.displayName
+				id = profile.id
+				return done(null, profile)
+			}
+			else 
+				console.log("Bad user")
+				return (done, null, false)
 		})
 	})
 )
@@ -104,12 +108,17 @@ app.get('/auth/google',
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 app.get('/auth/google/oauth2callback', 
-	passport.authenticate('google', { failureRedirect: '/login' }),
+	passport.authenticate('google', { failureRedirect: '/fail' }),
 	function(req, res) 
 	{
 	res.redirect('/success')
 	}
 )
+
+app.get('/fail', function(req,res)
+{
+	res.send('login failed')
+})
 
 app.get('/login', 
 	passport.authenticate('google', {scope: ['profile', 'email']}),
