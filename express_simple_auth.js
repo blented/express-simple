@@ -39,8 +39,20 @@ passport.use(new GoogleStrategy({
     }
 ))
 
+var sessionOpts = {
+  saveUninitialized: true, // saved new sessions
+  resave: false, // do not automatically write to the session store
+  store: sessionStore,
+  secret: config.session.secret,
+  cookie : { httpOnly: true, maxAge: 2419200000 } // configure when sessions expires
+}
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(cookieParser(config.session.secret))
+app.use(session(sessionOpts))
 app.use(passport.initialize())
+app.use(passport.session())
 
 passport.serializeUser(function(user, done) {
   done(null, user)
@@ -90,9 +102,10 @@ app.get('/login',
   });
 
 
-app.get('/success', function(req,res){
-	res.send('sucess!')
+app.get('/success', isloggedIn, function(req,res){
+	res.send('sucess!' )
 })
+
 app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/')
