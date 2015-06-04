@@ -7,22 +7,25 @@ var passport=require('passport')
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 var cookieParser = require('cookie-parser')  
 var session = require('express-session')
+var config = require('./config') 
 
 // Should be moved to config
-var GOOGLE_CLIENT_ID = '353594996268-eunc8cd2nfvp9qh0nc3dd5mn96ph3irr.apps.googleusercontent.com'
-var GOOGLE_CLIENT_SECRET = 'bTy5kWCVUImKMH_9rlXx5qAH'
-var GOOGLE_CALLBACK_ID = "http://localhost/loginCallback"
+var GOOGLE_CLIENT_ID = config.google_client_id
+var GOOGLE_CLIENT_SECRET = config.google_client_secret
+var GOOGLE_CALLBACK_ID = config.google_callback_id
+var CALLBACK_PATH = config.google_callback_path
 
-var config = require('./config.js') 
+
 
 name = ''
 id = ''
 
 //
 
-var port =  3000
+var port =  config.port
 var filename = '10mb.zip'
 var IPs = ''
+
 
 var serverInfo = {
 	'Type': 'type',
@@ -77,7 +80,7 @@ passport.use(new GoogleStrategy
 
 //Configure express and its sessions
 app.use(session(
-	{secret: 'hello there',
+	{secret: 'thisisasecret',
 	 resave: false, 
 	 saveUninitialized: false
 	}))
@@ -91,7 +94,6 @@ function isLoggedIn(req, res, next) {
 	if (req.isAuthenticated())
 		return next()
 	// if they aren't redirect them to the home page
-	//res.redirect('/')
 	res.redirect('/')
 }
 
@@ -113,7 +115,7 @@ app.get('/auth/google',
 //   request.  If authentication fails, the user will be redirected back to the
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
-app.get('/loginCallback', 
+app.get(CALLBACK_PATH, 
 	passport.authenticate('google', { failureRedirect: '/fail' }),
 	function(req, res) 
 	{
