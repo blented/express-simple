@@ -69,7 +69,7 @@ passport.use(new GoogleStrategy
 			}
 			else 
 				console.log("Bad user")
-				return (done, null, false)
+				return done(null, false)
 		})
 	})
 )
