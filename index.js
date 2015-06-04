@@ -68,8 +68,7 @@ passport.use(new GoogleStrategy
 				id = profile.id
 				return done(null, profile)
 			}
-			else 
-				console.log("Bad user")
+			else
 				return done(null, false)
 		})
 	})
@@ -86,7 +85,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 function isLoggedIn(req, res, next) {
-	console.log('testing '+ req.isAuthenticated())
 	// if user is authenticated in the session, carry on 
 	if (req.isAuthenticated())
 		return next()
