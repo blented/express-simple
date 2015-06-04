@@ -69,6 +69,7 @@ function isLoggedIn(req, res, next) {
 
 app.get('/loginCallback', function(req, res)
 {	
+	console.log("we are here and " + profile+ " is the profile")
 	 passport.authenticate('google', { failureRedirect: '/fail',
   									successRedirect: '/success' }),
 	 function(req, res) {
@@ -82,12 +83,12 @@ app.get('/auth/google',
     // function will not be called.
   })
 
-app.get('/auth/google/callback', 
+/*app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/fail',
   									successRedirect: '/success' }),
   function(req, res) {
     res.redirect('/success')
-  });
+  }); */
 
 
 
