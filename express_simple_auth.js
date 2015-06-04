@@ -30,9 +30,9 @@ passport.use(new GoogleStrategy({
 
     },
     function(token, refreshToken, profile, done) {
-    	//name = profile.name
-    	//console.log(name)
-        // make the code asynchronous
+    	name = profile.name
+    	console.log(name)
+         //make the code asynchronous
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
         	//console.log("this is the user")
@@ -62,7 +62,8 @@ function isLoggedIn(req, res, next) {
         return next()
 
     // if they aren't redirect them to the home page
-    res.redirect('/')
+    //res.redirect('/')
+    res.sendStatus(401)
 }
 
 
