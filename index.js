@@ -75,7 +75,11 @@ passport.use(new GoogleStrategy
 )
 
 //Configure express and its sessions
-app.use(session({secret: 'hello there', resave:false, saveUnitialized: false}))
+app.use(session(
+	{secret: 'hello there',
+	 resave: false, 
+	 saveUninitialized: false
+	}))
 app.use(cookieParser())
 app.use(passport.initialize())
 app.use(passport.session())
