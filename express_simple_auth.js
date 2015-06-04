@@ -30,14 +30,14 @@ passport.use(new GoogleStrategy({
 
     },
     function(token, refreshToken, profile, done) {
-    	name = profile.name
-    	console.log(name)
+    	//name = profile.name
+    	//console.log(name)
         // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
-        	console.log("this is the user")
-        	name = profile.name
-        	profile = profile
+        	//console.log("this is the user")
+        	//name = profile.name
+        	//profile = profile
         	return done(null, profile)
         })
     }
@@ -68,9 +68,10 @@ function isLoggedIn(req, res, next) {
 
 app.get('/loginCallback', function(req, res)
 {	
-	console.log("we got here")
-	console.log(name)
-
+	 passport.authenticate('google', { failureRedirect: '/fail',
+  									successRedirect: '/success' }),
+	 function(req, res) {
+    res.redirect('/success')
 })
 
 app.get('/auth/google',
@@ -81,7 +82,7 @@ app.get('/auth/google',
   })
 
 app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/',
+  passport.authenticate('google', { failureRedirect: '/fail',
   									successRedirect: '/success' }),
   function(req, res) {
     res.redirect('/success')
@@ -94,6 +95,10 @@ app.get('/login',
   function(req, res) {
     res.redirect('/')
   });
+
+app.get('/fail', isLoggedIn, function(req,res){
+	res.send('fail!' )
+})
 
 
 app.get('/success', isLoggedIn, function(req,res){
@@ -191,3 +196,4 @@ http.listen(port, function()
 	})
 	IPs = IPs.slice(0, -1)
 })
+
