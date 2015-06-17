@@ -48,6 +48,7 @@ passport.use(new GoogleStrategy
 		// User.findOne won't fire until we have all our data back from Google
 		process.nextTick(function() {
 			//In a normal app here is where the app looks up user in database
+			//User profile object documentation: http://passportjs.org/docs/profile
 			if (profile.emails[0].value == "jonathan_adam@brown.edu")
 			{
 				currentProfile = profile
