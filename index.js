@@ -2,9 +2,10 @@ var app = require('express')()
 var http = require('http').Server(app)
 var os = require('os')
 var _ = require('lodash')
+var config = require('./config.js')
 
 
-var port = 3000
+var port = config.port
 var filename = '10mb.zip'
 var IPs = ''
 
@@ -33,7 +34,7 @@ app.get('/file', function(req, res)
 app.get('/', function(req, res)
 {
 	var html = '<html><body style="font-family:monospace">' +
-		'<h1>Server Info: ' + os.hostname() + '</h1>' +
+		'<h1>Server Info: ' + config.sitename + '</h1>' +
 		'<ul>' +
 		'<li><strong>IPs:</strong><ul>' + IPs + '</ul></li>'
 
