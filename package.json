@@ -3,12 +3,16 @@
   "version": "0.0.1",
   "description": "Testing speeds",
   "dependencies": {
+    "client-sessions": "^0.7.0",
+    "cookie-parser": "*",
+    "cookie-session": "^1.1.0",
     "express": "^4.12.0",
+    "express-session": "*",
     "lodash": "*",
-    "cookie-parser":"*",
-    "express-session":"*",
-    "passport":"*",
-    "passport-google-auth":"*"
+    "passport": "*",
+    "passport-google-auth": "*",
+    "passport-http-bearer": "^1.0.1",
+    "passport-remember-me": "0.0.1"
   },
   "main": "index.js",
   "devDependencies": {},
