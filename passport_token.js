@@ -6,7 +6,6 @@ var _ = require('lodash')
 var passport=require('passport')
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 var cookieParser = require('cookie-parser')
-var BearerStrategy = require('passport-http-bearer').Strategy
 var session = require('cookie-session')
 //var session = require('express-session')
 var config = require('c:/temp/Oauth2Config')
@@ -25,23 +24,25 @@ var CALLBACK_PATH = config.google_callback_path
 var port =  config.port
 var IPs = ''
 
-
+// This is our fake database for now
 var users = {
-	'jonathan_adam@brown.edu': undefined,
+	'jonathan_adam@brown.edu': {'token' : undefined},
 }
 
+// This is a placeholder for a real database query
+// that checks whether an email is already in the account
 function checkUsers(email)
 {
-	console.log('we are checking the users fake database')
 	return  _.contains(Object.keys(users), email)
 }
 
-function checkTokens(token)
+// This is a placeholder for a User.findOne({token: token}) ish query
+function checkToken(token)
 {
-	console.log('we are checking the fake database for tokens')
-	var stuff = _.findKey(users, token)
+	var stuff =  _.findKey(users, 'token', token)
 	return stuff
 }
+
 //Just to display the user on our front page; not necessary for auth stuff
 var currentProfile
 
@@ -82,13 +83,9 @@ passport.use(new GoogleStrategy
 			// User profile object documentation: http://passportjs.org/docs/profile
 			if (checkUsers(profile.emails[0].value))
 			{
-				console.log('checking google auth every time')
 				currentProfile = profile
 				profile.token = token
-				users[profile.emails[0].value] = token
-				console.log('token has now been set for user')
-				console.log(profile.emails[0].value)
-				console.log(users[profile.emails[0].value])
+				users[profile.emails[0].value].token = token
 				return done(null, profile)
 			}
 			 else
@@ -99,7 +96,6 @@ passport.use(new GoogleStrategy
 		})
 	})
 )
-
 
 
 
@@ -119,17 +115,26 @@ app.use(passport.session())
 
 
 // Middleware to check whether a request is authenticated
+// This function gets called before every secure resource
 function isLoggedIn(req, res, next) {
 	// if user is authenticated in the session, carry on
-	if (req.isAuthenticated())
-		{
-			return next()
-		}
-	// if they aren't redirect them to the home page
+	// Usually you do req.isAuthenticated(), but here
+	// a call to lookup the token in the 'database'
+	// gives us a possibility to revoke access if there
+	// is a malicious user
+
+	// Not encrypted yet; here we would have to call an encryption
+	var sessionInfo = req.session
+
+	// if our token is found, proceed
+	if (checkToken(sessionInfo.passport.user.token))
+		return next()
+
+	//Otherwise redirect to home page
 	currentProfile = undefined
 	res.redirect('/')
-
 }
+
 
 // GET /auth/google
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -154,11 +159,25 @@ app.get(CALLBACK_PATH,
 	passport.authenticate('google', {failureRedirect: '/fail' }),
 	function(req, res)
 	{
-		console.log('redirectinnngggngngng')
-	// res.redirect('/success?access_token=' + req.user.access_token)
+	//res.redirect('/success')
 	res.redirect('/')
 	}
 )
+
+// This is identical to the /auth/google page above.
+app.get('/login',
+	passport.authenticate('google', {scope: ['profile', 'email']}),
+	function(req, res) {
+	res.redirect('/')
+})
+
+// Deletes session data and logs the user out
+app.get('/logout', function(req, res){
+	currentProfile = undefined
+	req.logout()
+	req.session = null
+	res.redirect('/')
+})
 
 // These are all pages that should only be able to be visited while logged in.
 // If trying to access while not logged in, the pages should redirect to the home page.
@@ -183,20 +202,7 @@ app.get('/fail', function(req,res)
 	res.send('login failed')
 })
 
-// This is identical to the /auth/google page above.
-app.get('/login',
-	passport.authenticate('google', {scope: ['profile', 'email']}),
-	function(req, res) {
-	res.redirect('/')
-})
 
-// Deletes session data and logs the user out
-app.get('/logout', function(req, res){
-	currentProfile = undefined
-	req.logout()
-	req.session = null
-	res.redirect('/')
-})
 
 // The page that you get redirected to immediately following login. Cannot be accessed
 // when not logged in.
@@ -209,14 +215,6 @@ app.get('/', function(req, res)
 {
 	var html = '<html><body style="font-family:monospace">' +
 		'<h1>Profile Info</h1>'
-	console.log('req authenticated')
-	console.log(req.session)
-	console.log('req user')
-	console.log(req.user)
-	console.log('req cookies')
-	console.log(req.cookies)
-	console.log(req.isAuthenticated())
-	// if (req.isAuthenticated())
 	if (currentProfile)
 	{
 		console.log('req authenticated')
